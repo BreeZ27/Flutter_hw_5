@@ -16,6 +16,20 @@ void main() {
   runApp(MyApp());
 }
 
+class ScaffoldExample extends StatefulWidget {
+  ScaffoldExample(Key key) : super(key: key);
+
+  @override
+  _ScaffoldExampleState createState() => _ScaffoldExampleState();
+}
+
+class _ScaffoldExampleState extends State<ScaffoldExample> {
+  int tabIndex = 0;
+
+  final GlobalKey<ScaffoldExample> scaffoldKey = GlobalKey<ScaffoldExample>();
+  PersistentBottomSheetController _controller;
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -39,19 +53,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // key: scaffoldKey,
+
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
       ),
       drawer: Drawer(
         child: ListView(
@@ -81,40 +90,62 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListView(),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: Text(
+          'Hello!',
+          style: TextStyle(fontSize: 30, color: Colors.blueGrey),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
+      // body: TabBarView(
+      //   controller: ,
+      //   children: [
+      //     Container(
+      //       color: Colors.black,
+      //       child: Text('Primite'),
+      //     ),
+      //     Container(
+      //       color: Colors.white,
+      //       child: Text('Moyo'),
+      //     ),
+      //     Container(
+      //       color: Colors.blue,
+      //       child: Text('DZ'),
+      //     )
+      //   ],
+      // ),
+
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: () {},
+        // tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomAppBar(
         child: Container(
           child: BottomNavigationBar(
+              // onTap: (),
+              // currentIndex: ,
+              selectedItemColor: Colors.purple,
               items: _tabBar.map((e) {
-            return BottomNavigationBarItem(icon: e.icon, label: e.title);
-          }).toList()
-              // BottomNavigationBarItem(
-              //     icon: Icon(Icons.camera), label: 'Camera'),
-              // BottomNavigationBarItem(
-              //     icon: Icon(Icons.photo_album), label: 'Photos'),
-              // BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat')
-              // ],
-              ),
+                return BottomNavigationBarItem(icon: e.icon, label: e.title);
+              }).toList()),
         ),
       ),
+
+      bottomSheet: BottomSheet(
+        builder: (context) => Container(
+          color: Colors.blueGrey,
+          height: 250,
+          child: Center(
+            child: Text('Goodbye =)'),
+          ),
+        ),
+        onClosing: () {},
+        backgroundColor: Colors.indigo,
+      ),
     );
+  }
+
+  void openDrawer() {
+    null;
   }
 }
