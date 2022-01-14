@@ -16,20 +16,6 @@ void main() {
   runApp(MyApp());
 }
 
-class ScaffoldExample extends StatefulWidget {
-  ScaffoldExample(Key key) : super(key: key);
-
-  @override
-  _ScaffoldExampleState createState() => _ScaffoldExampleState();
-}
-
-class _ScaffoldExampleState extends State<ScaffoldExample> {
-  int tabIndex = 0;
-
-  final GlobalKey<ScaffoldExample> scaffoldKey = GlobalKey<ScaffoldExample>();
-  PersistentBottomSheetController _controller;
-}
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -53,6 +39,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int tabIndex = 0;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  PersistentBottomSheetController _controller;
+
+  void toggelBottomSheet() {
+    if (_controller == null) {
+      _controller =
+          scaffoldKey.currentState.showBottomSheet((context) => Container(
+                color: Colors.blueGrey,
+                child: Text('Goodbye =)'),
+              ));
+    } else {
+      _controller.close();
+      _controller = null;
+    }
+  }
+
+  void openDrawer() {
+    scaffoldKey.currentState.openEndDrawer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,8 +67,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
       appBar: AppBar(
         title: Text(widget.title),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
+        actions: [
+          Builder(
+              builder: (context) => IconButton(
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  icon: Icon(Icons.person)))
+        ],
       ),
+
       drawer: Drawer(
         child: ListView(
           children: [
@@ -86,9 +101,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+
       endDrawer: Drawer(
         child: ListView(),
       ),
+
       body: Center(
         child: Text(
           'Hello!',
@@ -115,10 +132,10 @@ class _MyHomePageState extends State<MyHomePage> {
       // ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        // tooltip: 'Increment',
+        onPressed: toggelBottomSheet,
         child: Icon(Icons.add),
       ),
+
       bottomNavigationBar: BottomAppBar(
         child: Container(
           child: BottomNavigationBar(
@@ -143,9 +160,5 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.indigo,
       ),
     );
-  }
-
-  void openDrawer() {
-    null;
   }
 }
