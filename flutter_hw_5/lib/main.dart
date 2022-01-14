@@ -58,10 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
   //   }
   // }
 
-  // void openDrawer() {
-  // scaffoldKey.currentState.openDrawer();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -181,16 +177,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showModalBottomSheet<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return Container(
-                  height: 300,
-                  color: Colors.amber,
-                );
-              });
+          // Scaffold.of(context).showBottomSheet((context) => Icon(Icons.add));
+
+          // showModalBottomSheet<void>(
+          //     context: context,
+          //     builder: (BuildContext context) {
+          //       return Container(
+          //         height: 300,
+          //         color: Colors.amber,
+          //       );
+          //     });
         }, //toggelBottomSheet,
         child: Icon(Icons.add),
+        // child: Builder(
+        //   builder: (context) {
+        //     Scaffold.of(context).showBottomSheet((context) => Icon(Icons.add));
+        //   },
+        // ),
       ),
 
       bottomNavigationBar: BottomAppBar(
