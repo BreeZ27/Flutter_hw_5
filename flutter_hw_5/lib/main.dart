@@ -43,7 +43,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int tabIndex = 0;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  // PersistentBottomSheetController _controller;
+  // late PersistentBottomSheetController _controller;
 
   // void toggelBottomSheet() {
   //   if (_controller == null) {
@@ -59,13 +59,13 @@ class _MyHomePageState extends State<MyHomePage> {
   // }
 
   // void openDrawer() {
-  //   scaffoldKey.currentState.openEndDrawer();
+  // scaffoldKey.currentState.openDrawer();
   // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: scaffoldKey,
+      key: scaffoldKey,
 
       appBar: AppBar(
         title: Text(widget.title),
@@ -180,13 +180,23 @@ class _MyHomePageState extends State<MyHomePage> {
       // ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () {}, //toggelBottomSheet,
+        onPressed: () {
+          showModalBottomSheet<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return Container(
+                  height: 300,
+                  color: Colors.amber,
+                );
+              });
+        }, //toggelBottomSheet,
         child: Icon(Icons.add),
       ),
 
       bottomNavigationBar: BottomAppBar(
         child: Container(
           child: BottomNavigationBar(
+              elevation: 0,
               // onTap: (),
               // currentIndex: ,
               selectedItemColor: Colors.purple,
@@ -196,20 +206,21 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
 
-      bottomSheet: BottomSheet(
-        builder: (context) => Container(
-          color: Colors.blueGrey,
-          height: 250,
-          child: Center(
-            child: Text(
-              'Goodbye =)',
-              style: TextStyle(color: Colors.white, fontSize: 24),
-            ),
-          ),
-        ),
-        onClosing: () {},
-        backgroundColor: Colors.indigo,
-      ),
+      // bottomSheet: BottomSheet(
+      // animationController: bottomController,
+      //   builder: (context) => Container(
+      //     color: Colors.blueGrey,
+      //     height: 250,
+      //     child: Center(
+      //       child: Text(
+      //         'Goodbye =)',
+      //         style: TextStyle(color: Colors.white, fontSize: 24),
+      //       ),
+      //     ),
+      //   ),
+      //   onClosing: () {},
+      //   backgroundColor: Colors.indigo,
+      // ),
     );
   }
 }
