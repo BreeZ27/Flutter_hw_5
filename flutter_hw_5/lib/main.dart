@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 class TabItem {
@@ -41,24 +43,24 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int tabIndex = 0;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  PersistentBottomSheetController _controller;
+  // PersistentBottomSheetController _controller;
 
-  void toggelBottomSheet() {
-    if (_controller == null) {
-      _controller =
-          scaffoldKey.currentState.showBottomSheet((context) => Container(
-                color: Colors.blueGrey,
-                child: Text('Goodbye =)'),
-              ));
-    } else {
-      _controller.close();
-      _controller = null;
-    }
-  }
+  // void toggelBottomSheet() {
+  //   if (_controller == null) {
+  //     _controller =
+  //         scaffoldKey.currentState.showBottomSheet((context) => Container(
+  //               color: Colors.blueGrey,
+  //               child: Text('Goodbye =)'),
+  //             ));
+  //   } else {
+  //     _controller.close();
+  //     _controller = null;
+  //   }
+  // }
 
-  void openDrawer() {
-    scaffoldKey.currentState.openEndDrawer();
-  }
+  // void openDrawer() {
+  //   scaffoldKey.currentState.openEndDrawer();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -71,20 +73,20 @@ class _MyHomePageState extends State<MyHomePage> {
           Builder(
               builder: (context) => IconButton(
                   onPressed: () {
-                    Scaffold.of(context).openDrawer();
+                    Scaffold.of(context).openEndDrawer();
                   },
                   icon: Icon(Icons.person)))
         ],
       ),
 
       drawer: Drawer(
-        child: ListView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
             DrawerHeader(
                 child: CircleAvatar(
               radius: 60,
               backgroundImage: NetworkImage('https://picsum.photos/1200/501'),
-              child: Text('User'),
             )),
             ListTile(
               leading: Icon(Icons.home),
@@ -98,12 +100,58 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: Icon(Icons.file_copy),
               title: Text('Files'),
             ),
+            Expanded(
+              child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.all(20),
+                          child: TextButton(
+                              onPressed: () {},
+                              child: Text("Sign out"),
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.black12,
+                                  textStyle: TextStyle(fontSize: 16),
+                                  padding: EdgeInsets.all(16)))),
+                      Container(
+                          margin: EdgeInsets.all(20),
+                          child: TextButton(
+                              onPressed: () {},
+                              child: Text("Help"),
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.black12,
+                                  textStyle: TextStyle(fontSize: 16),
+                                  padding: EdgeInsets.all(16))))
+                    ],
+                  )),
+            )
           ],
         ),
       ),
 
       endDrawer: Drawer(
-        child: ListView(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: CircleAvatar(
+                radius: 60,
+                child: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: 60,
+                ),
+              ),
+            ),
+            Text(
+              'You are user',
+              style: TextStyle(fontSize: 24),
+            )
+          ],
+        ),
       ),
 
       body: Center(
@@ -132,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: toggelBottomSheet,
+        onPressed: () {}, //toggelBottomSheet,
         child: Icon(Icons.add),
       ),
 
@@ -153,7 +201,10 @@ class _MyHomePageState extends State<MyHomePage> {
           color: Colors.blueGrey,
           height: 250,
           child: Center(
-            child: Text('Goodbye =)'),
+            child: Text(
+              'Goodbye =)',
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
           ),
         ),
         onClosing: () {},
