@@ -40,29 +40,59 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int tabIndex = 0;
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  // late PersistentBottomSheetController _controller;
 
-  // void toggelBottomSheet() {
-  //   if (_controller == null) {
-  //     _controller =
-  //         scaffoldKey.currentState.showBottomSheet((context) => Container(
-  //               color: Colors.blueGrey,
-  //               child: Text('Goodbye =)'),
-  //             ));
-  //   } else {
-  //     _controller.close();
-  //     _controller = null;
-  //   }
-  // }
+  PersistentBottomSheetController? _controller;
+  late TabController _tabController;
+  int _currentTabIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: _tabBar.length, vsync: this);
+    _tabController.addListener(() {
+      print("Listener: ${_tabController.index}");
+      setState(() {
+        _currentTabIndex = _tabController.index;
+      });
+    });
+  }
+
+  void toggelBottomSheet() {
+    if (_controller == null) {
+      _controller =
+          scaffoldKey.currentState?.showBottomSheet((context) => Container(
+              color: Colors.amber,
+              height: 200,
+              child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                      margin: EdgeInsets.all(20),
+                      child: Row(children: [
+                        Expanded(
+                          child: Text('Please', style: TextStyle(fontSize: 24)),
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
+                            child: Text('Push me',
+                                style: TextStyle(
+                                    fontSize: 24, color: Colors.black)),
+                            onPressed: () {},
+                          ),
+                        )
+                      ])))));
+    } else {
+      _controller?.close();
+      _controller = null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
@@ -74,7 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(Icons.person)))
         ],
       ),
-
       drawer: Drawer(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -127,7 +156,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-
       endDrawer: Drawer(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -149,81 +177,52 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-
       body: Center(
-        child: Text(
-          'Hello!',
-          style: TextStyle(fontSize: 30, color: Colors.blueGrey),
-        ),
-      ),
-
-      // body: TabBarView(
-      //   controller: ,
-      //   children: [
-      //     Container(
-      //       color: Colors.black,
-      //       child: Text('Primite'),
-      //     ),
-      //     Container(
-      //       color: Colors.white,
-      //       child: Text('Moyo'),
-      //     ),
-      //     Container(
-      //       color: Colors.blue,
-      //       child: Text('DZ'),
-      //     )
-      //   ],
-      // ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Scaffold.of(context).showBottomSheet((context) => Icon(Icons.add));
-
-          // showModalBottomSheet<void>(
-          //     context: context,
-          //     builder: (BuildContext context) {
-          //       return Container(
-          //         height: 300,
-          //         color: Colors.amber,
-          //       );
-          //     });
-        }, //toggelBottomSheet,
-        child: Icon(Icons.add),
-        // child: Builder(
-        //   builder: (context) {
-        //     Scaffold.of(context).showBottomSheet((context) => Icon(Icons.add));
-        //   },
-        // ),
-      ),
-
+          child: TabBarView(
+        controller: _tabController,
+        children: [
+          Container(
+            color: Colors.blue[50],
+            child: Center(
+                child: Text(
+              'Primite',
+              style: TextStyle(color: Colors.black, fontSize: 24),
+            )),
+          ),
+          Container(
+            color: Colors.white,
+            child: Center(
+                child: Text('Moyo',
+                    style: TextStyle(color: Colors.black, fontSize: 24))),
+          ),
+          Container(
+            color: Colors.amber,
+            child: Center(
+                child: Text('DZ',
+                    style: TextStyle(color: Colors.black, fontSize: 24))),
+          )
+        ],
+      )),
+      floatingActionButton: FloatingActionButton.extended(
+          icon: Icon(Icons.add),
+          label: Text('Open'),
+          onPressed: toggelBottomSheet),
       bottomNavigationBar: BottomAppBar(
         child: Container(
           child: BottomNavigationBar(
-              elevation: 0,
-              // onTap: (),
-              // currentIndex: ,
+              onTap: (index) {
+                setState(() {
+                  _tabController.index = index;
+                  _currentTabIndex = index;
+                });
+              },
+              currentIndex: _currentTabIndex,
               selectedItemColor: Colors.purple,
               items: _tabBar.map((e) {
                 return BottomNavigationBarItem(icon: e.icon, label: e.title);
               }).toList()),
         ),
       ),
-
-      // bottomSheet: BottomSheet(
-      // animationController: bottomController,
-      //   builder: (context) => Container(
-      //     color: Colors.blueGrey,
-      //     height: 250,
-      //     child: Center(
-      //       child: Text(
-      //         'Goodbye =)',
-      //         style: TextStyle(color: Colors.white, fontSize: 24),
-      //       ),
-      //     ),
-      //   ),
-      //   onClosing: () {},
-      //   backgroundColor: Colors.indigo,
-      // ),
     );
   }
 }
